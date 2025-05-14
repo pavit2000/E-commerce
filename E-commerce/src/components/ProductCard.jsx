@@ -1,13 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function ProductCard({ product, addToCart }) {
+function ProductCard({ product, cartItems, addToCart, removeFromCart }) {
+  const cartItem = cartItems.find((item) => item.id === product.id);
+  const quantity = cartItem ? cartItem.quantity : 0;
+
   return (
     <div className="card">
-      <img src={product.image} alt={product.title} className="product-image" />
+      <Link to={`/product/${product.id}`}>
+        <img src={product.image} alt={product.title} className="product-image" />
+      </Link>
       <div className="card-body">
         <h2 className="product-title">{product.title}</h2>
-        <p className="product-price">${product.price}</p>
-        <button className="add-to-cart" onClick={() => addToCart(product)}>Add to Cart</button>
+        <p className="product-price">${product.price.toFixed(2)}</p>
+
+        {quantity > 0 ? (
+          <div className="qty-controls">
+            <button onClick={() => removeFromCart(product.id)} className="qty-btn">-</button>
+            <span className="qty-count">{quantity}</span>
+            <button onClick={() => addToCart(product)} className="qty-btn">+</button>
+          </div>
+        ) : (
+          <button className="add-to-cart" onClick={() => addToCart(product)}>
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );

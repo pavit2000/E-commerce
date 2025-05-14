@@ -2,25 +2,18 @@ import React, { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Checkout from "./pages/Checkout";
+import useCart from "./hooks/useCart";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (product) => {
-    setCartItems((prev) => [...prev, product]);
-  };
+  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
   useEffect(() => {
     console.log("Cart items in App:", cartItems);
   }, [cartItems]);
 
   const handleCheckout = () => {
-    alert(
-      `Checking out ${cartItems.length} items. Total: $${cartItems
-        .reduce((acc, item) => acc + item.price, 0)
-        .toFixed(2)}`
-    );
-    setCartItems([]);
+    clearCart();
   };
 
   return (
@@ -40,6 +33,12 @@ function App() {
           path="/checkout"
           element={
             <Checkout cartItems={cartItems} handleCheckout={handleCheckout} />
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <ProductPage addToCart={addToCart} />
           }
         />
       </Routes>
