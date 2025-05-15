@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import "../CSS/ProductPage.css"; // Import your CSS file
 
 function ProductPage() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ function ProductPage() {
         <img
           src={product.image}
           alt={product.title}
-          className="product-image-large"
+          className="product-image-small"
         />
         <div className="product-info">
           <p className="product-price">${product.price.toFixed(2)}</p>

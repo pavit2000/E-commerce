@@ -42,6 +42,21 @@ function Checkout({ handleCheckout }) {
                 <p className="product-subtotal">
                   Subtotal: ${(item.price * item.quantity).toFixed(2)}
                 </p>
+                <div className="qty-controls">
+                  <button
+                    className="qty-btn"
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    className="qty-btn"
+                    onClick={() => addToCart(item)}
+                  >
+                    +
+                  </button>
+                  </div>
               </div>
             </div>
           ))}
