@@ -15,6 +15,9 @@ function ProductPage({ addToCart }) {
       });
   }, [id]);
 
+  const cartItem = cartItems.find((item) => item.id === Number(id));
+  const quantity = cartItem ? cartItem.quantity : 0;
+
   if (loading) return <p className="loading">Loading product...</p>;
 
   if (!product) return <p>Product not found.</p>;
@@ -27,9 +30,17 @@ function ProductPage({ addToCart }) {
         <div className="product-info">
           <p className="product-price">${product.price.toFixed(2)}</p>
           <p className="product-description">{product.description}</p>
-          <button className="add-to-cart" onClick={() => addToCart(product)}>
-            Add to Cart
-          </button>
+          {quantity > 0 ? (
+            <div className="qty-controls">
+              <button onClick={() => removeFromCart(product.id)}>-</button>
+              <span>{quantity}</span>
+              <button onClick={() => addToCart(product)}>+</button>
+            </div>
+          ) : (
+            <button className="add-to-cart" onClick={() => addToCart(product)}>
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
       <Link to="/" className="back-link">← Back to Home</Link>

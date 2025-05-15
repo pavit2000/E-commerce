@@ -38,7 +38,11 @@ function App() {
         <Route
           path="/product/:id"
           element={
-            <ProductPage addToCart={addToCart} />
+            <ProductPage 
+              cartItems={cartItems}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
           }
         />
       </Routes>
