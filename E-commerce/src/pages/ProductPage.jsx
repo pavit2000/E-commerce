@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import useCart from "../hooks/useCart";
 
-function ProductPage({ addToCart }) {
+function ProductPage() {
   const { id } = useParams();
+  const { cartItems, addToCart, removeFromCart } = useCart();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,17 +22,21 @@ function ProductPage({ addToCart }) {
   const quantity = cartItem ? cartItem.quantity : 0;
 
   if (loading) return <p className="loading">Loading product...</p>;
-
   if (!product) return <p>Product not found.</p>;
 
   return (
     <div className="container">
       <h1 className="heading">{product.title}</h1>
       <div className="product-detail">
-        <img src={product.image} alt={product.title} className="product-image-large" />
+        <img
+          src={product.image}
+          alt={product.title}
+          className="product-image-large"
+        />
         <div className="product-info">
           <p className="product-price">${product.price.toFixed(2)}</p>
           <p className="product-description">{product.description}</p>
+
           {quantity > 0 ? (
             <div className="qty-controls">
               <button onClick={() => removeFromCart(product.id)}>-</button>
