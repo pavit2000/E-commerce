@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useCart from "../hooks/useCart";
+import "../CSS/home.css"; 
 
-function Home({ cartItems, addToCart, removeFromCart, handleCheckout }) {
+function Home({ handleCheckout }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
+  const { cartItems, addToCart, removeFromCart } = useCart();
+  const navigate = useNavigate();
 
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -17,7 +22,8 @@ function Home({ cartItems, addToCart, removeFromCart, handleCheckout }) {
 
   const closeModal = () => {
     setShowModal(false);
-    handleCheckout();
+    //handleCheckout(); 
+    navigate("/checkout"); 
   };
 
   useEffect(() => {
@@ -40,19 +46,10 @@ function Home({ cartItems, addToCart, removeFromCart, handleCheckout }) {
         </p>
 
         {cartItems.length > 0 && (
-          <div className="cart-list">
-            {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
-            </div>
-            ))}
-            <div className="checkout-controls">
-              <button className="checkout-btn" onClick={triggerCheckout}>
-                Checkout (${totalPrice})
-              </button>
-              <Link to="/checkout" className="checkout-btn">
-                Go to checkout
-              </Link>
-            </div>
+          <div className="checkout-controls">
+            <button className="checkout-btn" onClick={triggerCheckout}>
+              Checkout (${totalPrice})
+            </button>
           </div>
         )}
       </div>
@@ -75,20 +72,20 @@ function Home({ cartItems, addToCart, removeFromCart, handleCheckout }) {
 
       {/* Modal */}
       {showModal && (
-        <div style={styles.overlay}>
-          <div style={styles.modal}>
+        <div className="modal-overlay">
+          <div className="modal-box">
             <h2>Confirm Checkout</h2>
             <p>
               You're checking out{" "}
               {cartItems.reduce((acc, item) => acc + item.quantity, 0)} item(s)
             </p>
             <p>Total: ${totalPrice}</p>
-            <button onClick={closeModal} style={styles.confirmBtn}>
+            <button className="modal-btn" onClick={closeModal}>
               Confirm
             </button>
             <button
+              className="modal-btn modal-cancel"
               onClick={() => setShowModal(false)}
-              style={styles.cancelBtn}
             >
               Cancel
             </button>

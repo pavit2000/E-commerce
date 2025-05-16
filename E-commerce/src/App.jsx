@@ -6,7 +6,7 @@ import useCart from "./hooks/useCart";
 import ProductPage from "./pages/ProductPage";
 
 function App() {
-  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
+  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();  // use context
 
   useEffect(() => {
     console.log("Cart items in App:", cartItems);
@@ -17,7 +17,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/E-commerce">
       <Routes>
         <Route
           path="/"
@@ -38,7 +38,11 @@ function App() {
         <Route
           path="/product/:id"
           element={
-            <ProductPage addToCart={addToCart} />
+            <ProductPage 
+              cartItems={cartItems}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
           }
         />
       </Routes>
