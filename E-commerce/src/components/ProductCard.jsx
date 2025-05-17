@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { CartProvider, useCart } from "../context/CartContext";
 
 function ProductCard({ product, cartItems, addToCart, removeFromCart }) {
   const cartItem = cartItems.find((item) => item.id === product.id);

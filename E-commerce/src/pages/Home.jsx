@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
-import useCart from "../hooks/useCart";
+import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/home.css"; 
 
-function Home({ handleCheckout }) {
+function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
