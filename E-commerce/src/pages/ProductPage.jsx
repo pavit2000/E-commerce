@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import useCart from "../hooks/useCart";
+import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/ProductPage.css"; // Import your CSS file
 
 function ProductPage() {

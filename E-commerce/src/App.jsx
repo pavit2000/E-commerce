@@ -1,52 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Home from "./pages/Home";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import Checkout from "./pages/Checkout";
-import useCart from "./hooks/useCart";
 import ProductPage from "./pages/ProductPage";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
-  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();  // use context
-
-  useEffect(() => {
-    console.log("Cart items in App:", cartItems);
-  }, [cartItems]);
-
-  const handleCheckout = () => {
-    clearCart();
-  };
-
   return (
-    <BrowserRouter basename="/E-commerce">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              cartItems={cartItems}
-              addToCart={addToCart}
-              handleCheckout={handleCheckout}
-            />
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <Checkout cartItems={cartItems} handleCheckout={handleCheckout} />
-          }
-        />
-        <Route
-          path="/product/:id"
-          element={
-            <ProductPage 
-              cartItems={cartItems}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-            />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter basename="/E-commerce">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/product/:id" element={<ProductPage />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 
