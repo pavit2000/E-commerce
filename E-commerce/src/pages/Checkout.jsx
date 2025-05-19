@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useCart from "../hooks/useCart";
 
-function Checkout({ cartItems, handleCheckout }) {
+function Checkout({ handleCheckout }) {
+  const { cartItems, addToCart, removeFromCart } = useCart();
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -40,6 +42,21 @@ function Checkout({ cartItems, handleCheckout }) {
                 <p className="product-subtotal">
                   Subtotal: ${(item.price * item.quantity).toFixed(2)}
                 </p>
+                <div className="qty-controls">
+                  <button
+                    className="qty-btn"
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    className="qty-btn"
+                    onClick={() => addToCart(item)}
+                  >
+                    +
+                  </button>
+                  </div>
               </div>
             </div>
           ))}

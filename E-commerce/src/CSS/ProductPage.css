@@ -1,0 +1,9 @@
+.product-image-small {
+    max-width: 150px;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+  }
+  

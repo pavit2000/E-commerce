@@ -1,37 +1,52 @@
-import {useState} from "react";
+import { useState, useEffect } from "react";
 
-export default function useCart() {
-    const [cartItems, setCartItems] = useState([]);
+function useCart() {
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
-    const addToCart = (product) => {
-        setCartItems((prev) => {
-            const existing  = prev.find((item) => item.id === product.id);
-            if (existing) {
-                return prev.map((item) =>
-                    item.id === product.id ? {...item, quantity: item.quantity + 1} : item
-                );
-            } else {
-                return [...prev, {...product, quantity: 1}];
-            }
-        });
-    };
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
-    const removeFromCart = (productId) => {
-        setCartItems((prev) =>
-            prev
-            .map((item) => {
-                if (item.id === productId) {
-                    return {...item, quantity: item.quantity - 1};
-                }
-                return item;
-            })
-            .filter((item) => item.quantity > 0)
+  const addToCart = (product) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
-    };
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
+  };
 
-    const clearCart = () => {
-        setCartItems([]);
-    };
+  const removeFromCart = (productId) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
 
-    return {cartItems, addToCart, removeFromCart, clearCart};
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  return {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    clearCart,
+  };
 }
+
+export default useCart;
