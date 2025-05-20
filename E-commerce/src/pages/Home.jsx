@@ -27,7 +27,7 @@ function Home() {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems } = useCart();
   const navigate = useNavigate();
 
   const totalPrice = cartItems
@@ -119,9 +119,6 @@ function Home() {
             <ProductCard
               key={product.id}
               product={product}
-              addToCart={addToCart} 
-              removeFromCart={removeFromCart}
-              cartItems={cartItems} 
             />
           ))}
         </div>
