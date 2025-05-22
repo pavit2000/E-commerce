@@ -45,6 +45,8 @@ function ProductPage() {
   return (
     <div className="container">
       <h1 className="heading">{product.title}</h1>
+      <h2 className="product-brand"> {product.brand}</h2>
+      <h3 className="product-category"> {product.categories}</h3>
       <div className="product-detail">
         <img
           src={product.image}
@@ -53,7 +55,7 @@ function ProductPage() {
         />
         <div className="product-info">
           <p className="product-price">${product.price.toFixed(2)}</p>
-          <p className="product-description">{product.description}</p>
+          <p className="product-description">{product.desc}</p>
 
           {quantity > 0 ? (
             <div className="qty-controls">

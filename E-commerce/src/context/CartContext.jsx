@@ -20,56 +20,56 @@ export const CartProvider = ({ children }) => {
   const userId = 1;
   const cartId = 1;
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/carts/get-cart`, {
-            method: "GET",
-            headers: AUTH_HEADER
-          });
-        const data = await res.json();
-        if (!data.length) return;
+//   useEffect(() => {
+//     const fetchCart = async () => {
+//       try {
+//         const res = await fetch(`${BASE_URL}/carts/get-cart`, {
+//             method: "GET",
+//             headers: AUTH_HEADER
+//           });
+//         const data = await res.json();
+//         if (!data.length) return;
 
-        const latestCart = data[data.length - 1];
-        const hydrated = await Promise.all(
-          latestCart.products.map(async ({ productId, quantity }) => {
-            const p = await fetch(`${BASE_URL}/products/${productId}`);
-            const pd = await p.json();
-            return { ...pd, quantity };
-          })
-        );
-        setCartItems(hydrated);
-      } catch (err) {
-        console.error("Error fetching cart:", err);
-      }
-    };
+//         const latestCart = data[data.length - 1];
+//         const hydrated = await Promise.all(
+//           latestCart.products.map(async ({ productId, quantity }) => {
+//             const p = await fetch(`${BASE_URL}/products/${productId}`);
+//             const pd = await p.json();
+//             return { ...pd, quantity };
+//           })
+//         );
+//         setCartItems(hydrated);
+//       } catch (err) {
+//         console.error("Error fetching cart:", err);
+//       }
+//     };
 
-    fetchCart();
-  }, []);
+//     fetchCart();
+//   }, []);
 
-  const updateCartAPI = async (items) => {
-    const payload = {
-      userId,
-      date: new Date().toISOString(),
-      products: items.map((item) => ({
-        productId: item.id,
-        quantity: item.quantity,
-      })),
-    };
+//   const updateCartAPI = async (items) => {
+//     const payload = {
+//       userId,
+//       date: new Date().toISOString(),
+//       products: items.map((item) => ({
+//         productId: item.id,
+//         quantity: item.quantity,
+//       })),
+//     };
 
-    try {
-      await fetch(`${BASE_URL}/carts/`, {
-        method: "POST",
-        headers: { 
-            "Content-Type": "application/json" 
+//     try {
+//       await fetch(`${BASE_URL}/carts/`, {
+//         method: "POST",
+//         headers: { 
+//             "Content-Type": "application/json" 
 
-        },
-        body: JSON.stringify(payload),
-      });
-    } catch (error) {
-      console.error("Failed to update cart:", error);
-    }
-  };
+//         },
+//         body: JSON.stringify(payload),
+//       });
+//     } catch (error) {
+//       console.error("Failed to update cart:", error);
+//     }
+//   };
 
 
 //   useEffect(() => {
