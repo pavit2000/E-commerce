@@ -43,15 +43,43 @@ function Home() {
     //handleCheckout(); 
     navigate("/checkout"); 
   };
+  
+  const BASE_URL = "http://localhost:5001";
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        let url = `${BASE_URL}/products`;
+        if (selectedCategory && selectedCategory !== "all") {
+          url += `?category=${encodeURIComponent(selectedCategory)}`;
+        }
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+  
+        const data = await res.json();
         setProducts(data);
         setLoading(false);
-      });
-  }, []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      }
+    };
+  
+    fetchProducts();
+  }, [selectedCategory]);
+
+  // useEffect(() => {
+  //   fetch("https://fakestoreapi.com/products")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setProducts(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   useEffect(() => {
     setCurrentPage(1); // Reset pagination when filters change
@@ -82,10 +110,9 @@ function Home() {
           Category:
           <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
             <option value="all">All</option>
-            <option value="men's clothing">Men's Clothing</option>
-            <option value="women's clothing">Women's Clothing</option>
-            <option value="jewelery">Jewelery</option>
-            <option value="electronics">Electronics</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Wearables">Wearables</option>
           </select>
         </label>
 
@@ -117,7 +144,7 @@ function Home() {
         <div className="grid">
           {currentProducts.map((product) => (
             <ProductCard
-              key={product.id}
+              key={product._id || product.id}
               product={product}
             />
           ))}
