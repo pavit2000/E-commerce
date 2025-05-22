@@ -50,9 +50,9 @@ function Home() {
     const fetchProducts = async () => {
       try {
         let url = `${BASE_URL}/products`;
-        if (selectedCategory && selectedCategory !== "all") {
-          url += `?category=${encodeURIComponent(selectedCategory)}`;
-        }
+        // if (selectedCategory && selectedCategory !== "all") {
+        //   url += `?category=${encodeURIComponent(selectedCategory)}`;
+        // }
         const res = await fetch(url, {
           method: "GET",
           headers: {
@@ -70,7 +70,7 @@ function Home() {
     };
   
     fetchProducts();
-  }, [selectedCategory]);
+  }, []);
 
   // useEffect(() => {
   //   fetch("https://fakestoreapi.com/products")
