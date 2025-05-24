@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 
 function ProductCard({ product }) {
-  const { cartItems, addToCart, removeFromCart } = useCart();
-  const cartItem = cartItems.find((item) => item.id === product.id);
+  const { cartItems, addToCart, decreaseQuantity } = useCart();
+  const cartItem = cartItems.find((item) => item._id === product._id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
 
@@ -19,7 +19,7 @@ function ProductCard({ product }) {
 
         {quantity > 0 ? (
           <div className="qty-controls">
-            <button onClick={() => removeFromCart(product.id)} className="qty-btn">-</button>
+            <button onClick={() => decreaseQuantity(product._id)} className="qty-btn">-</button>
             <span className="qty-count">{quantity}</span>
             <button onClick={() => addToCart(product)} className="qty-btn">+</button>
           </div>
