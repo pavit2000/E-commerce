@@ -62,9 +62,9 @@ function Home() {
             <ProductCard
               key={product.id}
               product={product}
-              cartItems={cartItems}
-              addToCart={addToCart}
+              addToCart={addToCart} 
               removeFromCart={removeFromCart}
+              cartItems={cartItems} 
             />
           ))}
         </div>

@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 
-function ProductCard({ product, cartItems, addToCart, removeFromCart }) {
+function ProductCard({ product }) {
+  const { cartItems, addToCart, removeFromCart } = useCart();
   const cartItem = cartItems.find((item) => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
+
 
   return (
     <div className="card">
