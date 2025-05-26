@@ -15,13 +15,13 @@ function Home() {
   const productsPerPage = 4; // Number of products per page
 
   // filter state
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("all");
+  const [filters, setFilters] = useState({
+    selectedCategory: "all",
+    selectedBrand: "all",
+    minPrice: "",
+    maxPrice: "",
+  });
 
-  //const filters = { selectedCategory, minPrice, maxPrice };
-  const filters = { selectedCategory, selectedBrand, minPrice, maxPrice };
   const filteredProducts = filterProducts(products, filters);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
@@ -60,10 +60,6 @@ function Home() {
         });
         
         const data = await res.json();
-        // data.map((product, index) => {
-        //   console.log(`Product ${index + 1} brand:`, product.brand);
-        // });
-        //console.log("Products:", data);
         setProducts(data);
         setLoading(false);
       } catch (error) {
@@ -75,18 +71,9 @@ function Home() {
     fetchProducts();
   }, []);
 
-  // useEffect(() => {
-  //   fetch("https://fakestoreapi.com/products")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
   useEffect(() => {
     setCurrentPage(1); // Reset pagination when filters change
-  }, [selectedCategory, selectedBrand, minPrice, maxPrice]);
+  }, [filters]);
 
   return (
     <div className="container">
@@ -111,7 +98,9 @@ function Home() {
       <div className="filters">
         <label>
           Category:
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <select value={filters.selectedCategory} onChange={(e) =>
+            setFilters((prev) => ({ ...prev, selectedCategory: e.target.value }))
+            }>
             <option value="all">All</option>
             <option value="Shoes">Shoes</option>
             <option value="Electronics">Electronics</option>
@@ -121,7 +110,12 @@ function Home() {
 
         <label>
           Brand:
-          <select value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
+          <select
+            value={filters.selectedBrand}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, selectedBrand: e.target.value }))
+            }
+          >
             <option value="all">All</option>
             <option value="Nike">Nike</option>
             <option value="Adidas">Adidas</option>
@@ -159,8 +153,10 @@ function Home() {
           Min Price:
           <input
             type="number"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
+            value={filters.minPrice}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, minPrice: e.target.value }))
+            }
             placeholder="e.g. 10"
           />
         </label>
@@ -169,8 +165,10 @@ function Home() {
           Max Price:
           <input
             type="number"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
+            value={filters.maxPrice}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, maxPrice: e.target.value }))
+            }
             placeholder="e.g. 100"
           />
         </label>

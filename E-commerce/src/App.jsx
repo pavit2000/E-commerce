@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Checkout from "./pages/Checkout";
 import ProductPage from "./pages/ProductPage";
 import { CartProvider } from "./context/CartContext";
+import Snackbar from "./components/Snackbar";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </BrowserRouter>
+      <Snackbar />
     </CartProvider>
   );
 }
