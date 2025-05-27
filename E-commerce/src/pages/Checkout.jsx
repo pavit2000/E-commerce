@@ -45,14 +45,19 @@ function Checkout({ handleCheckout }) {
                 <div className="qty-controls">
                   <button
                     className="qty-btn"
-                    onClick={() => decreaseQuantity(item._id)}
+                    onClick={() => decreaseQuantity(item.productId)}
                   >
                     -
                   </button>
                   <span>{item.quantity}</span>
                   <button
                     className="qty-btn"
-                    onClick={() => addToCart(item)}
+                    onClick={() => addToCart({
+                      _id: item.productId,
+                      title: item.title,
+                      price: item.price,
+                      image: item.image,
+                    })}
                   >
                     +
                   </button>

@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MjIxNTQyLCJleHAiOjE3NDgzMDc5NDJ9.28jyRHWix_xHvqOBReCResJuyfe7lCyj1_-NPc6ggnc",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MzA5MzYyLCJleHAiOjE3NDgzOTU3NjJ9.pwL9lMiGptKDlZlEgwg0hWPxHqs8jvO-i5yDlxTImBs",
 };
 
 function ProductPage() {
@@ -37,7 +37,7 @@ function ProductPage() {
     fetchProduct();
   }, [id]);
 
-  const cartItem = cartItems.find((item) => item._id === id);
+  const cartItem = cartItems.find((item) => item.productId === id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
   if (loading) return <p className="loading">Loading product...</p>;

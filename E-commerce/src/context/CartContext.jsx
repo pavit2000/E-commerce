@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MjIxNTQyLCJleHAiOjE3NDgzMDc5NDJ9.28jyRHWix_xHvqOBReCResJuyfe7lCyj1_-NPc6ggnc",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MzA5MzYyLCJleHAiOjE3NDgzOTU3NjJ9.pwL9lMiGptKDlZlEgwg0hWPxHqs8jvO-i5yDlxTImBs",
 };
 
 export const CartProvider = ({ children }) => {
@@ -31,15 +31,7 @@ export const CartProvider = ({ children }) => {
           return;
         }
 
-        const hydrated = await Promise.all(
-          cartData.cart.products.map(async ({ productId, quantity }) => {
-            const pRes = await fetch(`${BASE_URL}/products/${productId}`);
-            const pData = await pRes.json();
-            return { ...pData, quantity };
-          })
-        );
-
-        setCartItems(hydrated);
+        setCartItems(cartData.cart.products);
       } catch (error) {
         console.error("Error loading cart on refresh:", error);
       }
@@ -53,6 +45,9 @@ export const CartProvider = ({ children }) => {
       const data = {
         productId: product._id,
         quantity: 1,
+        title: product.title,
+        price: product.price,
+        image: product.image,
       };
       // Call backend API to add product to cart
       const response = await fetch(`${BASE_URL}/carts`, {
@@ -62,6 +57,10 @@ export const CartProvider = ({ children }) => {
       });
   
       if (!response.ok) {
+        // const errorData = await response.json();
+        // const message = errorData?.message || "Failed to add product to cart";
+        // setNotification({ type: "error", message });
+        // throw new Error(message);
         setNotification({ type: "error", message: "Failed to add product to cart" });
         throw new Error("Failed to add product to cart");
       }
@@ -73,24 +72,8 @@ export const CartProvider = ({ children }) => {
       });
   
       const cartData = await cartRes.json();
-  
-      if (!cartData.cart || !cartData.cart.products || !cartData.cart.products.length) {
-        console.log("Cart is empty");
-        setCartItems([]);
-        return;
-      }
-  
-      const hydrated = await Promise.all(
-        cartData.cart.products.map(async ({ productId, quantity }) => {
-          const pRes = await fetch(`${BASE_URL}/products/${productId}`);
-          const pData = await pRes.json();
-          return { ...pData, quantity };
-        })
-      );
 
-      setNotification({ type: "success", message: "Added to cart!" });
-      setCartItems(hydrated);
-      console.log("Hydrated cart:", hydrated);
+      setCartItems(cartData.cart.products || []);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -116,17 +99,25 @@ export const CartProvider = ({ children }) => {
         setCartItems([]);
         return;
       }
+
+      if (!response.ok) {
+        let message = "Failed to decrease item quantity";
+        try {
+          const errorData = await response.json();
+          if (errorData?.message) message = errorData.message;
+        } catch {}
+        setNotification({ type: "error", message });
+        throw new Error(message);
+      }
+
+      const cartRes = await fetch(`${BASE_URL}/carts/get-cart`, {
+        method: "GET",
+        headers: AUTH_HEADER,
+      });
   
-      const hydrated = await Promise.all(
-        updatedCart.products.map(async ({ productId, quantity }) => {
-          const res = await fetch(`${BASE_URL}/products/${productId}`);
-          const data = await res.json();
-          return { ...data, quantity };
-        })
-      );
+      const cartData = await cartRes.json();
   
-      setCartItems(hydrated);
-      setNotification({ type: "success", message: "Quantity decreased!" });
+      setCartItems(cartData.cart.products || []);
     } catch (error) {
       console.error("Error decreasing quantity:", error);
     }

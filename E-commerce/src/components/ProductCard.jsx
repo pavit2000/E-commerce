@@ -4,7 +4,7 @@ import { CartProvider, useCart } from "../context/CartContext";
 
 function ProductCard({ product }) {
   const { cartItems, addToCart, decreaseQuantity } = useCart();
-  const cartItem = cartItems.find((item) => item._id === product._id);
+  const cartItem = cartItems.find((item) => item.productId === product._id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
 
