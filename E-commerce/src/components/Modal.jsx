@@ -1,4 +1,7 @@
-function Modal({ showModal, setShowModal, cartItems, totalPrice, closeModal }) {
+import { useCart } from "../context/CartContext";
+
+function Modal({ showModal, setShowModal, totalPrice, closeModal }) {
+    const { cartItems, totalQuantity } = useCart();
     if (!showModal) return null;
 
     return (
@@ -7,7 +10,7 @@ function Modal({ showModal, setShowModal, cartItems, totalPrice, closeModal }) {
             <h2>Confirm Checkout</h2>
             <p>
                 You're checking out{" "}
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)} item(s)
+                {totalQuantity} item(s)
             </p>
             <p>Total: ${totalPrice}</p>
             <button className="modal-btn" onClick={closeModal}>

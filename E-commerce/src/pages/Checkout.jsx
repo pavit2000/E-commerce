@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 function Checkout({ handleCheckout }) {
-  const { cartItems, addToCart, decreaseQuantity } = useCart();
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
-    .toFixed(2);
+  const { cartItems, addToCart, decreaseQuantity, totalQuantity, totalPrice } = useCart();
 
   return (
     <div className="container">
@@ -15,16 +11,16 @@ function Checkout({ handleCheckout }) {
 
       <div className="cart-bar">
         <p>
-          <strong>Cart:</strong> {totalItems} item(s)
+          <strong>Cart:</strong> {totalQuantity} item(s)
         </p>
-        {totalItems > 0 && (
+        {totalQuantity > 0 && (
           <button className="checkout-btn" onClick={handleCheckout}>
             Checkout (${totalPrice})
           </button>
         )}
       </div>
 
-      {totalItems === 0 ? (
+      {totalQuantity === 0 ? (
         <p className="loading">Your cart is empty.</p>
       ) : (
         <div className="grid">

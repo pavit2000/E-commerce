@@ -7,13 +7,13 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MzA5MzYyLCJleHAiOjE3NDgzOTU3NjJ9.pwL9lMiGptKDlZlEgwg0hWPxHqs8jvO-i5yDlxTImBs",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDAxMDA4LCJleHAiOjE3NDg0ODc0MDh9.jgv4e4DiQ4QuJY7yaBKIRMbh36EvK2ogNqw0A28AdiY",
 };
 
 function ProductPage() {
   const { id } = useParams();
   //const { cartItems, addToCart, removeFromCart } = useCart();
-  const { cartItems, addToCart, decreaseQuantity } = useCart();
+  const { cartItems, cartLoading, addToCart, decreaseQuantity } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);

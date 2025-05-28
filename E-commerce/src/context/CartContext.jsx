@@ -1,5 +1,5 @@
 // src/context/CartContext.jsx
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 //import { useAuth } from "../Auth/AuthContext"; // Import the useAuth hook
 
 const CartContext = createContext();
@@ -7,12 +7,22 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MzA5MzYyLCJleHAiOjE3NDgzOTU3NjJ9.pwL9lMiGptKDlZlEgwg0hWPxHqs8jvO-i5yDlxTImBs",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDAxMDA4LCJleHAiOjE3NDg0ODc0MDh9.jgv4e4DiQ4QuJY7yaBKIRMbh36EvK2ogNqw0A28AdiY",
 };
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [cartLoading, setCartLoading] = useState(false);
+
+  const calculateTotalPrice = (items) =>
+    items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+
+  const calculateTotalQuantity = (items) =>
+    items.reduce((acc, item) => acc + item.quantity, 0);
+
+  const totalPrice = useMemo(() => calculateTotalPrice(cartItems), [cartItems]);
+  const totalQuantity = useMemo(() => calculateTotalQuantity(cartItems), [cartItems]);
   
   const userId = 1;
   const cartId = 1;
@@ -42,6 +52,7 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (product) => {
     try {
+      setCartLoading(true);
       const data = {
         productId: product._id,
         quantity: 1,
@@ -76,11 +87,14 @@ export const CartProvider = ({ children }) => {
       setCartItems(cartData.cart.products || []);
     } catch (error) {
       console.error("Error adding to cart:", error);
+    } finally {
+      setCartLoading(false);
     }
   };
 
   const decreaseQuantity = async (productId) => {
     try {
+      setCartLoading(true);
       const response = await fetch(`${BASE_URL}/carts/decrease-quantity`, {
         method: "POST",
         headers: AUTH_HEADER,
@@ -120,6 +134,8 @@ export const CartProvider = ({ children }) => {
       setCartItems(cartData.cart.products || []);
     } catch (error) {
       console.error("Error decreasing quantity:", error);
+    } finally {
+      setCartLoading(false); // hide loader
     }
   };
   
@@ -143,7 +159,15 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       //value={{ cartItems, addToCart, removeFromCart, clearCart }}
-      value={{ cartItems, addToCart, decreaseQuantity, notification, setNotification }}
+      value={{ cartItems, 
+        addToCart, 
+        decreaseQuantity, 
+        notification, 
+        setNotification, 
+        cartLoading, 
+        setCartLoading, 
+        totalPrice, 
+        totalQuantity }}
     >
       {children}
     </CartContext.Provider>

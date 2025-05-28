@@ -31,12 +31,8 @@ function Home() {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const { cartItems } = useCart();
+  const { cartItems, cartLoading, totalQuantity, totalPrice } = useCart();
   const navigate = useNavigate();
-
-  const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
-    .toFixed(2);
 
   const triggerCheckout = () => {
     setShowModal(true);
@@ -84,7 +80,7 @@ function Home() {
       <div className="cart-bar">
         <p>
           <strong>Cart:</strong>{" "}
-          {cartItems.reduce((acc, item) => acc + item.quantity, 0)} item(s)
+          {totalQuantity} item(s)
         </p>
 
         {cartItems.length > 0 && (
@@ -95,6 +91,10 @@ function Home() {
           </div>
         )}
       </div>
+
+      {cartLoading && (
+        <p className="loading">Updating cart...</p> 
+      )}
 
       <FilterControls filters={filters} setFilters={setFilters}/>
 
@@ -124,7 +124,7 @@ function Home() {
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
-        cartItems={cartItems}
+        //cartItems={cartItems}
         totalPrice={totalPrice}
         closeModal={closeModal}
       />
