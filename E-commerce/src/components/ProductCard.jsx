@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 
 function ProductCard({ product }) {
-  const { cartItems, addToCart, decreaseQuantity } = useCart();
+  const { cartItems, addToCart, decreaseQuantity, cartLoading } = useCart();
   const cartItem = cartItems.find((item) => item.productId === product._id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
@@ -19,14 +19,26 @@ function ProductCard({ product }) {
 
         {quantity > 0 ? (
           <div className="qty-controls">
-            <button onClick={() => decreaseQuantity(product._id)} className="qty-btn">-</button>
+            <button onClick={() => decreaseQuantity(product._id)}
+              disabled={cartLoading}
+              className={cartLoading ? "disabled" : ""}
+              >
+                -</button>
             <span className="qty-count">{quantity}</span>
-            <button onClick={() => addToCart(product)} className="qty-btn">+</button>
+            <button onClick={() => addToCart(product)}
+              disabled={cartLoading}
+              className={cartLoading ? "disabled" : ""}
+              >
+                +</button>
           </div>
         ) : (
-          <button className="add-to-cart" onClick={() => addToCart(product)}>
-            Add to Cart
-          </button>
+          <button
+              className={`add-to-cart ${cartLoading ? "disabled" : ""}`}
+              onClick={() => addToCart(product)}
+              disabled={cartLoading}
+            >
+              {cartLoading ? "Processing..." : "Add to Cart"}
+            </button>
         )}
       </div>
     </div>
