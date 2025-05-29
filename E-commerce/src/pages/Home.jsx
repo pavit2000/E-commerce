@@ -31,7 +31,7 @@ function Home() {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const { cartItems, cartLoading, totalQuantity, totalPrice } = useCart();
+  const { cartItems, cartLoading, totalQuantity, totalPrice, deleteCart } = useCart();
   const navigate = useNavigate();
 
   const triggerCheckout = () => {
@@ -82,6 +82,18 @@ function Home() {
           <strong>Cart:</strong>{" "}
           {totalQuantity} item(s)
         </p>
+
+        {cartItems.length > 0 && (
+          <div className="cart-actions">
+            <button 
+              className="clear-cart-btn" 
+              onClick={deleteCart}
+              disabled={cartLoading}
+            >
+              {cartLoading ? "Clearing..." : "Delete Cart"}
+            </button>
+          </div>
+        )}
 
         {cartItems.length > 0 && (
           <div className="checkout-controls">

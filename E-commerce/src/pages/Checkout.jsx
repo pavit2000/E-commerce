@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import "../CSS/checkout.css";
 
 function Checkout({ handleCheckout }) {
-  const { cartItems, addToCart, decreaseQuantity, totalQuantity, totalPrice } = useCart();
+  const { cartItems, addToCart, decreaseQuantity, totalQuantity, cartLoading, totalPrice, deleteCart } = useCart();
 
   return (
     <div className="container">
@@ -13,6 +14,17 @@ function Checkout({ handleCheckout }) {
         <p>
           <strong>Cart:</strong> {totalQuantity} item(s)
         </p>
+
+        {cartItems.length > 0 && (
+          <button
+            className="delete-cart-btn"
+            onClick={deleteCart}
+            disabled={cartLoading}
+          >
+            {cartLoading ? "Clearing..." : "Delete Cart"}
+          </button>
+        )}
+
         {totalQuantity > 0 && (
           <button className="checkout-btn" onClick={handleCheckout}>
             Checkout (${totalPrice})
