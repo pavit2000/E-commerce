@@ -118,33 +118,39 @@ export const CartProvider = ({ children }) => {
     }
   };
   
-
-  // const removeFromCart = (productId) => {
-  //   setCartItems((prev) =>
-  //     prev
-  //       .map((item) =>
-  //         item.id === productId
-  //           ? { ...item, quantity: item.quantity - 1 }
-  //           : item
-  //       )
-  //       .filter((item) => item.quantity > 0)
-  //   );
-  // };
-
-  // const clearCart = () => {
-  //   setCartItems([]);
-  // };
+  const deleteCart = async () => {
+    try {
+      setCartLoading(true);
+      const response = await fetch(`${BASE_URL}/carts/empty-cart`, {
+        method: "PUT",
+        headers: AUTH_HEADER,
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        const message = typeof result === 'string' ? result : `${response.status} ${response.statusText}`;
+        setNotification({ type: "error", message });
+        throw new Error(message);
+      }
+      setCartItems(result.products || []);
+    }
+    catch (error) {
+      console.error("Error deleting cart:", error);
+      setNotification({ type: "error", message: "Failed to delete cart." });
+    } finally {
+      setCartLoading(false);
+    }
+  };
 
   return (
     <CartContext.Provider
       //value={{ cartItems, addToCart, removeFromCart, clearCart }}
       value={{ cartItems, 
         addToCart, 
-        decreaseQuantity, 
+        decreaseQuantity,
+        deleteCart, 
         notification, 
         setNotification, 
         cartLoading, 
-        setCartLoading, 
         totalPrice, 
         totalQuantity }}
     >
