@@ -18,8 +18,10 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("all");
 
-  const filters = { selectedCategory, minPrice, maxPrice };
+  //const filters = { selectedCategory, minPrice, maxPrice };
+  const filters = { selectedCategory, selectedBrand, minPrice, maxPrice };
   const filteredProducts = filterProducts(products, filters);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
@@ -50,17 +52,18 @@ function Home() {
     const fetchProducts = async () => {
       try {
         let url = `${BASE_URL}/products`;
-        if (selectedCategory && selectedCategory !== "all") {
-          url += `?category=${encodeURIComponent(selectedCategory)}`;
-        }
         const res = await fetch(url, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
           }
         });
-  
+        
         const data = await res.json();
+        // data.map((product, index) => {
+        //   console.log(`Product ${index + 1} brand:`, product.brand);
+        // });
+        console.log("Products:", data);
         setProducts(data);
         setLoading(false);
       } catch (error) {
@@ -70,7 +73,7 @@ function Home() {
     };
   
     fetchProducts();
-  }, [selectedCategory]);
+  }, []);
 
   // useEffect(() => {
   //   fetch("https://fakestoreapi.com/products")
@@ -83,7 +86,7 @@ function Home() {
 
   useEffect(() => {
     setCurrentPage(1); // Reset pagination when filters change
-  }, [selectedCategory, minPrice, maxPrice]);
+  }, [selectedCategory, selectedBrand, minPrice, maxPrice]);
 
   return (
     <div className="container">
@@ -115,6 +118,42 @@ function Home() {
             <option value="Wearables">Wearables</option>
           </select>
         </label>
+
+        <label>
+          Brand:
+          <select value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
+            <option value="all">All</option>
+            <option value="Nike">Nike</option>
+            <option value="Adidas">Adidas</option>
+            <option value="Apple">Apple</option>
+            <option value="Sony">Sony</option>
+            <option value="Fitbit">Fitbit</option>
+            <option value="Garmin">Garmin</option>
+            <option value="JBL">JBL</option>
+            <option value="Razer">Razer</option>
+            <option value="Dell">Dell</option>
+            <option value="ASUS">ASUS</option>
+            <option value="HP">HP</option>
+            <option value="Crocs">Crocs</option>
+            <option value="New Balance">New Balance</option>
+            <option value="Reebok">Reebok</option>
+            <option value="Logitech">Logitech</option>
+            <option value="Beats">Beats</option>
+            <option value="Vans">Vans</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Google">Google</option>
+            <option value="Under Armour">Under Armour</option>
+            <option value="Timberland">Timberland</option>
+            <option value="Bose">Bose</option>
+            <option value="Polar">Polar</option>
+            <option value="Microsoft">Microsoft</option>
+            <option value="Canon">Canon</option>
+            <option value="On">On</option>
+            <option value="Lenovo">Lenovo</option>
+            <option value="Anker">Anker</option>
+          </select>
+        </label>
+
 
         <label>
           Min Price:
