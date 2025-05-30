@@ -3,6 +3,13 @@ import { useParams, Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/ProductPage.css"; // Import your CSS file
 
+const BASE_URL = "http://localhost:5001";
+const AUTH_HEADER = {
+  "Content-Type": "application/json",
+  Authorization:
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ3ODA1Nzk5LCJleHAiOjE3NDc4OTIxOTl9.JjuCMOiury_6tOeSkXk3ICn5KYPK6_xtb_7IPFXI4HA",
+};
+
 function ProductPage() {
   const { id } = useParams();
   const { cartItems, addToCart, removeFromCart } = useCart();
@@ -11,12 +18,22 @@ function ProductPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/products/${id}`, {
+          method: "GET",
+          headers: AUTH_HEADER,
+        });
+        const data = await res.json();
         setProduct(data);
         setLoading(false);
-      });
+      } catch (err) {
+        console.error("Error loading product:", err);
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   const cartItem = cartItems.find((item) => item.id === Number(id));
