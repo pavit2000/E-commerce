@@ -1,5 +1,6 @@
 // src/context/CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
+//import { useAuth } from "../Auth/AuthContext"; // Import the useAuth hook
 
 const CartContext = createContext();
 
@@ -8,6 +9,9 @@ export const CartProvider = ({ children }) => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  
+  const userId = 1;
+  const cartId = 1;
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));

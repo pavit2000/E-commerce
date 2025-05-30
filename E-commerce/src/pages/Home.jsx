@@ -1,13 +1,31 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../components/Pagination";
+import { filterProducts } from "../utils/filterProducts";
 import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/home.css"; 
+
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 4; // Number of products per page
+
+  // filter state
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  const filters = { selectedCategory, minPrice, maxPrice };
+  const filteredProducts = filterProducts(products, filters);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const { cartItems, addToCart, removeFromCart } = useCart();
   const navigate = useNavigate();
@@ -35,6 +53,10 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1); // Reset pagination when filters change
+  }, [selectedCategory, minPrice, maxPrice]);
+
   return (
     <div className="container">
       <h1 className="heading">Holiday Specials</h1>
@@ -54,20 +76,64 @@ function Home() {
         )}
       </div>
 
+      {/* Filter UI */}
+      <div className="filters">
+        <label>
+          Category:
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="all">All</option>
+            <option value="men's clothing">Men's Clothing</option>
+            <option value="women's clothing">Women's Clothing</option>
+            <option value="jewelery">Jewelery</option>
+            <option value="electronics">Electronics</option>
+          </select>
+        </label>
+
+        <label>
+          Min Price:
+          <input
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            placeholder="e.g. 10"
+          />
+        </label>
+
+        <label>
+          Max Price:
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="e.g. 100"
+          />
+        </label>
+      </div>
+
       {loading ? (
         <p className="loading">Loading...</p>
       ) : (
+        <>
         <div className="grid">
-          {products.map((product) => (
+          {currentProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
-              cartItems={cartItems}
-              addToCart={addToCart}
+              addToCart={addToCart} 
               removeFromCart={removeFromCart}
+              cartItems={cartItems} 
             />
           ))}
         </div>
+
+        {filteredProducts.length > productsPerPage && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
+        </>
       )}
 
       {/* Modal */}
