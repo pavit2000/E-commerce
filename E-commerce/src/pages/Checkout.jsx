@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 function Checkout({ handleCheckout }) {
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems, addToCart, decreaseQuantity } = useCart();
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -28,8 +28,8 @@ function Checkout({ handleCheckout }) {
         <p className="loading">Your cart is empty.</p>
       ) : (
         <div className="grid">
-          {cartItems.map((item) => (
-            <div className="card" key={item.id}>
+          {cartItems.filter(item => item.quantity > 0).map((item) => (
+            <div className="card" key={item._id}>
               <img
                 src={item.image}
                 alt={item.title}
@@ -45,7 +45,7 @@ function Checkout({ handleCheckout }) {
                 <div className="qty-controls">
                   <button
                     className="qty-btn"
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => decreaseQuantity(item._id)}
                   >
                     -
                   </button>

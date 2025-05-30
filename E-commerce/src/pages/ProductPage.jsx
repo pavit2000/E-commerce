@@ -12,7 +12,8 @@ const AUTH_HEADER = {
 
 function ProductPage() {
   const { id } = useParams();
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  //const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems, addToCart, decreaseQuantity } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ function ProductPage() {
     fetchProduct();
   }, [id]);
 
-  const cartItem = cartItems.find((item) => item.id === Number(id));
+  const cartItem = cartItems.find((item) => item._id === id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
   if (loading) return <p className="loading">Loading product...</p>;
@@ -59,7 +60,7 @@ function ProductPage() {
 
           {quantity > 0 ? (
             <div className="qty-controls">
-              <button onClick={() => removeFromCart(product.id)}>-</button>
+              <button onClick={() => decreaseQuantity(product._id)}>-</button>
               <span>{quantity}</span>
               <button onClick={() => addToCart(product)}>+</button>
             </div>

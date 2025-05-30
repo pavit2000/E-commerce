@@ -63,7 +63,7 @@ function Home() {
         // data.map((product, index) => {
         //   console.log(`Product ${index + 1} brand:`, product.brand);
         // });
-        console.log("Products:", data);
+        //console.log("Products:", data);
         setProducts(data);
         setLoading(false);
       } catch (error) {
