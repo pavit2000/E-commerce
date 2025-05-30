@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ3ODA1Nzk5LCJleHAiOjE3NDc4OTIxOTl9.JjuCMOiury_6tOeSkXk3ICn5KYPK6_xtb_7IPFXI4HA",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4MjIxNTQyLCJleHAiOjE3NDgzMDc5NDJ9.28jyRHWix_xHvqOBReCResJuyfe7lCyj1_-NPc6ggnc",
 };
 
 function ProductPage() {
