@@ -75,6 +75,12 @@ function Home() {
 
   return (
     <div className="container">
+      <button className="login-btn" onClick={() => navigate("/login")}>
+        Login
+      </button>
+      <button className="register-btn" onClick={() => navigate("/register")}>
+        Register
+      </button>
       <h1 className="heading">Holiday Specials</h1>
 
       <div className="cart-bar">

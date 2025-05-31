@@ -1,0 +1,26 @@
+.form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 0.2rem;
+  }
+  
+  button {
+    padding: 0.6rem 1rem;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
