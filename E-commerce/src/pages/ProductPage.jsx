@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/ProductPage.css"; // Import your CSS file
+import { useAuth } from "../context/AuthContext";
 
 const BASE_URL = "http://localhost:5001";
-const AUTH_HEADER = {
-  "Content-Type": "application/json",
-  Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDg3NTA1LCJleHAiOjE3NDg1NzM5MDV9.By_z9tpQAi--2WdyB9zcOeCFsjeyeF5xuspeUWXOOKs",
-};
 
 function ProductPage() {
+  const { user } = useAuth();
+  const AUTH_HEADER = {
+    "Content-Type": "application/json",
+    Authorization:
+      `Bearer ${user?.accessToken}`
+  };  
   const { id } = useParams();
   //const { cartItems, addToCart, removeFromCart } = useCart();
   const { cartItems, cartLoading, addToCart, decreaseQuantity } = useCart();

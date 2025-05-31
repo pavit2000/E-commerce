@@ -1,16 +1,18 @@
 // src/context/CartContext.jsx
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-//import { useAuth } from "../Auth/AuthContext"; // Import the useAuth hook
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";// Import the useAuth hook
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 const BASE_URL = "http://localhost:5001";
-const AUTH_HEADER = {
-  "Content-Type": "application/json",
-  Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDg3NTA1LCJleHAiOjE3NDg1NzM5MDV9.By_z9tpQAi--2WdyB9zcOeCFsjeyeF5xuspeUWXOOKs",
-};
 
 export const CartProvider = ({ children }) => {
+  const { user } = useAuth(); 
+  const AUTH_HEADER = {
+    "Content-Type": "application/json",
+    Authorization:
+      `Bearer ${user?.accessToken}`
+  };
+
   const [cartItems, setCartItems] = useState([]);
   const [notification, setNotification] = useState(null);
   const [cartLoading, setCartLoading] = useState(false);
