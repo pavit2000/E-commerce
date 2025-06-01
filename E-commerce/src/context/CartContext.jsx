@@ -30,6 +30,7 @@ export const CartProvider = ({ children }) => {
   const cartId = 1;
 
   useEffect(() => {
+    if (!user?.accessToken) return;
     const fetchCart = async () => {
       try {
         const res = await fetch(`${BASE_URL}/carts/get-cart`, {
