@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/ProductPage.css"; // Import your CSS file
 import { useAuth } from "../context/AuthContext";
+import QuantityControls from "../components/QuantityControls";
 
 const BASE_URL = "http://localhost:5001";
 
@@ -60,29 +61,13 @@ function ProductPage() {
           <p className="product-price">${product.price.toFixed(2)}</p>
           <p className="product-description">{product.desc}</p>
 
-          {quantity > 0 ? (
-            <div className="qty-controls">
-              <button onClick={() => decreaseQuantity(product._id)}
-              disabled={cartLoading}
-              className={cartLoading ? "disabled" : ""}
-              >
-                -</button>
-              <span>{quantity}</span>
-              <button onClick={() => addToCart(product)}
-              disabled={cartLoading}
-              className={cartLoading ? "disabled" : ""}
-              >
-                +</button>
-            </div>
-          ) : (
-            <button
-              className={`add-to-cart ${cartLoading ? "disabled" : ""}`}
-              onClick={() => addToCart(product)}
-              disabled={cartLoading}
-            >
-              {cartLoading ? "Processing..." : "Add to Cart"}
-            </button>
-          )}
+          <QuantityControls
+            product={product}
+            quantity={quantity}
+            addToCart={addToCart}
+            decreaseQuantity={decreaseQuantity}
+            cartLoading={cartLoading}
+          />
         </div>
       </div>
       <Link to="/" className="back-link">← Back to Home</Link>

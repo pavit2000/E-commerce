@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "../CSS/checkout.css";
+import CartBar from "../components/CartBar";
+import QuantityControls from "../components/QuantityControls";
 
 function Checkout({ handleCheckout }) {
   const { cartItems, addToCart, decreaseQuantity, totalQuantity, cartLoading, totalPrice, deleteCart } = useCart();
@@ -10,27 +12,11 @@ function Checkout({ handleCheckout }) {
     <div className="container">
       <h1 className="heading">Checkout</h1>
 
-      <div className="cart-bar">
-        <p>
-          <strong>Cart:</strong> {totalQuantity} item(s)
-        </p>
-
-        {cartItems.length > 0 && (
-          <button
-            className="delete-cart-btn"
-            onClick={deleteCart}
-            disabled={cartLoading}
-          >
-            {cartLoading ? "Clearing..." : "Delete Cart"}
-          </button>
-        )}
-
-        {totalQuantity > 0 && (
-          <button className="checkout-btn" onClick={handleCheckout}>
-            Checkout (${totalPrice})
-          </button>
-        )}
-      </div>
+      <CartBar 
+        onCheckout={handleCheckout} 
+        showCheckout={true} 
+        showDelete={true}
+      />
 
       {totalQuantity === 0 ? (
         <p className="loading">Your cart is empty.</p>
@@ -50,26 +36,18 @@ function Checkout({ handleCheckout }) {
                 <p className="product-subtotal">
                   Subtotal: ${(item.price * item.quantity).toFixed(2)}
                 </p>
-                <div className="qty-controls">
-                  <button
-                    className="qty-btn"
-                    onClick={() => decreaseQuantity(item.productId)}
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    className="qty-btn"
-                    onClick={() => addToCart({
-                      _id: item.productId,
-                      title: item.title,
-                      price: item.price,
-                      image: item.image,
-                    })}
-                  >
-                    +
-                  </button>
-                  </div>
+                <QuantityControls
+                  product={{
+                    _id: item.productId,
+                    title: item.title,
+                    price: item.price,
+                    image: item.image
+                  }}
+                  quantity={item.quantity}
+                  addToCart={addToCart}
+                  decreaseQuantity={decreaseQuantity}
+                  cartLoading={cartLoading}
+                />
               </div>
             </div>
           ))}

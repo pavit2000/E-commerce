@@ -7,6 +7,11 @@ import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/home.css"; 
 import FilterControls from "../components/FilterControls";
 import Modal from "../components/Modal";
+import { useAuth } from "../context/AuthContext";
+import LogoutButton from "../components/LogoutButton";
+import LoginButton from "../components/LoginButton";
+import RegisterButton from "../components/RegisterButton";
+import CartBar from "../components/CartBar";
 
 
 function Home() {
@@ -33,6 +38,7 @@ function Home() {
 
   const { cartItems, cartLoading, totalQuantity, totalPrice, deleteCart } = useCart();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const triggerCheckout = () => {
     setShowModal(true);
@@ -40,7 +46,6 @@ function Home() {
 
   const closeModal = () => {
     setShowModal(false);
-    //handleCheckout(); 
     navigate("/checkout"); 
   };
   
@@ -75,40 +80,15 @@ function Home() {
 
   return (
     <div className="container">
-      <button className="login-btn" onClick={() => navigate("/login")}>
-        Login
-      </button>
-      <button className="register-btn" onClick={() => navigate("/register")}>
-        Register
-      </button>
+      <LoginButton />
+      {user && <LogoutButton />}
+      <RegisterButton />
       <h1 className="heading">Holiday Specials</h1>
 
-      <div className="cart-bar">
-        <p>
-          <strong>Cart:</strong>{" "}
-          {totalQuantity} item(s)
-        </p>
-
-        {cartItems.length > 0 && (
-          <div className="cart-actions">
-            <button 
-              className="clear-cart-btn" 
-              onClick={deleteCart}
-              disabled={cartLoading}
-            >
-              {cartLoading ? "Clearing..." : "Delete Cart"}
-            </button>
-          </div>
-        )}
-
-        {cartItems.length > 0 && (
-          <div className="checkout-controls">
-            <button className="checkout-btn" onClick={triggerCheckout}>
-              Checkout (${totalPrice})
-            </button>
-          </div>
-        )}
-      </div>
+      <CartBar 
+        onCheckout={triggerCheckout} 
+        showDelete={false}
+      />
 
       {cartLoading && (
         <p className="loading">Updating cart...</p> 
@@ -142,7 +122,6 @@ function Home() {
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
-        //cartItems={cartItems}
         totalPrice={totalPrice}
         closeModal={closeModal}
       />
