@@ -1,0 +1,50 @@
+.qty-controls {
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 1rem;
+    background-color: #fff;
+  }
+  
+  .qty-controls button {
+    width: 40px;
+    height: 100%;
+    border: none;
+    background-color: #fff;
+    color: #e91e63;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .qty-controls button:hover:not(.disabled) {
+    background-color: #fce4ec;
+  }
+  
+  .qty-controls span {
+    width: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #fdf6f6;
+  }
+  
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}  
