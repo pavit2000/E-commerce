@@ -1,11 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "../CSS/checkout.css";
 import CartBar from "../components/CartBar";
 import QuantityControls from "../components/QuantityControls";
+import { useAuth } from "../context/AuthContext";
 
 function Checkout({ handleCheckout }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
   const { cartItems, addToCart, decreaseQuantity, totalQuantity, cartLoading, totalPrice, deleteCart } = useCart();
 
   return (
