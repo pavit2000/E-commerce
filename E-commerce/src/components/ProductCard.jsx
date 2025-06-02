@@ -11,14 +11,6 @@ function ProductCard({ product }) {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleAddToCart = (product) => {
-    if (!user) {
-      navigate("/login");
-    } else {
-      addToCart(product);
-    }
-  };
-
   return (
     <div className="card">
       <p className="product-title">{product.title}</p>
@@ -29,9 +21,6 @@ function ProductCard({ product }) {
       <QuantityControls
         product={product}
         quantity={quantity}
-        addToCart={handleAddToCart}
-        decreaseQuantity={decreaseQuantity}
-        cartLoading={cartLoading}
       />
     </div>
   );

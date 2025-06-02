@@ -93,3 +93,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.user-display {
+  align-items: right;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
