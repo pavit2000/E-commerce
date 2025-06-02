@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDAxMDA4LCJleHAiOjE3NDg0ODc0MDh9.jgv4e4DiQ4QuJY7yaBKIRMbh36EvK2ogNqw0A28AdiY",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDg3NTA1LCJleHAiOjE3NDg1NzM5MDV9.By_z9tpQAi--2WdyB9zcOeCFsjeyeF5xuspeUWXOOKs",
 };
 
 function ProductPage() {
@@ -60,13 +60,25 @@ function ProductPage() {
 
           {quantity > 0 ? (
             <div className="qty-controls">
-              <button onClick={() => decreaseQuantity(product._id)}>-</button>
+              <button onClick={() => decreaseQuantity(product._id)}
+              disabled={cartLoading}
+              className={cartLoading ? "disabled" : ""}
+              >
+                -</button>
               <span>{quantity}</span>
-              <button onClick={() => addToCart(product)}>+</button>
+              <button onClick={() => addToCart(product)}
+              disabled={cartLoading}
+              className={cartLoading ? "disabled" : ""}
+              >
+                +</button>
             </div>
           ) : (
-            <button className="add-to-cart" onClick={() => addToCart(product)}>
-              Add to Cart
+            <button
+              className={`add-to-cart ${cartLoading ? "disabled" : ""}`}
+              onClick={() => addToCart(product)}
+              disabled={cartLoading}
+            >
+              {cartLoading ? "Processing..." : "Add to Cart"}
             </button>
           )}
         </div>

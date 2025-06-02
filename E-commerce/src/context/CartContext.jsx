@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5001";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
   Authorization:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDAxMDA4LCJleHAiOjE3NDg0ODc0MDh9.jgv4e4DiQ4QuJY7yaBKIRMbh36EvK2ogNqw0A28AdiY",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODJkNjYzMmUwYzAyZGM1NWU5YmQ3Y2UiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzQ4NDg3NTA1LCJleHAiOjE3NDg1NzM5MDV9.By_z9tpQAi--2WdyB9zcOeCFsjeyeF5xuspeUWXOOKs",
 };
 
 export const CartProvider = ({ children }) => {
@@ -76,15 +76,10 @@ export const CartProvider = ({ children }) => {
         throw new Error("Failed to add product to cart");
       }
   
-      // Fetch updated cart from backend
-      const cartRes = await fetch(`${BASE_URL}/carts/get-cart`, {
-        method: "GET",
-        headers: AUTH_HEADER,
-      });
-  
-      const cartData = await cartRes.json();
+      const result = await response.json();
+      const updatedCart = result.updatedCart;
 
-      setCartItems(cartData.cart.products || []);
+      setCartItems(updatedCart.products || []);
     } catch (error) {
       console.error("Error adding to cart:", error);
     } finally {
@@ -95,16 +90,12 @@ export const CartProvider = ({ children }) => {
   const decreaseQuantity = async (productId) => {
     try {
       setCartLoading(true);
+      //await new Promise((resolve) => setTimeout(resolve, 1500));
       const response = await fetch(`${BASE_URL}/carts/decrease-quantity`, {
         method: "POST",
         headers: AUTH_HEADER,
         body: JSON.stringify({ productId, quantity: 1 }),
       });
-  
-      if (!response.ok) {
-        setNotification({ type: "error", message: "Failed to decrease item quantity" });
-        throw new Error("Failed to decrease item quantity");
-      }
   
       const result = await response.json();
       const updatedCart = result.updatedCart;
@@ -124,14 +115,7 @@ export const CartProvider = ({ children }) => {
         throw new Error(message);
       }
 
-      const cartRes = await fetch(`${BASE_URL}/carts/get-cart`, {
-        method: "GET",
-        headers: AUTH_HEADER,
-      });
-  
-      const cartData = await cartRes.json();
-  
-      setCartItems(cartData.cart.products || []);
+      setCartItems(updatedCart.products || []);
     } catch (error) {
       console.error("Error decreasing quantity:", error);
     } finally {
