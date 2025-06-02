@@ -68,12 +68,10 @@ export const CartProvider = ({ children }) => {
       });
   
       if (!response.ok) {
-        // const errorData = await response.json();
-        // const message = errorData?.message || "Failed to add product to cart";
-        // setNotification({ type: "error", message });
-        // throw new Error(message);
-        setNotification({ type: "error", message: "Failed to add product to cart" });
-        throw new Error("Failed to add product to cart");
+        const result = await response.json();
+        const message = typeof result === 'string' ? result : `${response.status} ${response.statusText}`;
+        setNotification({ type: "error", message });
+        throw new Error(message);
       }
   
       const result = await response.json();
@@ -106,11 +104,8 @@ export const CartProvider = ({ children }) => {
       }
 
       if (!response.ok) {
-        let message = "Failed to decrease item quantity";
-        try {
-          const errorData = await response.json();
-          if (errorData?.message) message = errorData.message;
-        } catch {}
+        const result = await response.json();
+        const message = typeof result === 'string' ? result : `${response.status} ${response.statusText}`;
         setNotification({ type: "error", message });
         throw new Error(message);
       }
