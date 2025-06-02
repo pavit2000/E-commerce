@@ -1,8 +1,22 @@
 import React from "react";
 import "../CSS/quantityControls.css"; // Optional for scoped styles
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-function QuantityControls({ product, quantity, addToCart, decreaseQuantity, cartLoading }) {
+function QuantityControls({ product, quantity }) {
+  const { addToCart, decreaseQuantity, cartLoading } = useCart();
   const isInCart = quantity > 0;
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = (product) => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      addToCart(product);
+    }
+  };
 
   return (
     <div className="qty-controls">
@@ -27,7 +41,7 @@ function QuantityControls({ product, quantity, addToCart, decreaseQuantity, cart
       ) : (
         <button
           className={`add-to-cart ${cartLoading ? "disabled" : ""}`}
-          onClick={() => addToCart(product)}
+          onClick={() => handleAddToCart(product)}
           disabled={cartLoading}
         >
           {cartLoading ? "Processing..." : "Add to Cart"}

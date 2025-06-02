@@ -64,9 +64,6 @@ function ProductPage() {
           <QuantityControls
             product={product}
             quantity={quantity}
-            addToCart={addToCart}
-            decreaseQuantity={decreaseQuantity}
-            cartLoading={cartLoading}
           />
         </div>
       </div>

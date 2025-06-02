@@ -83,6 +83,12 @@ function Home() {
       <LoginButton />
       {user && <LogoutButton />}
       <RegisterButton />
+
+      {user && (
+        <div className="user-display">
+          Welcome, <strong>{user.username}</strong>
+        </div>
+      )}
       <h1 className="heading">Holiday Specials</h1>
 
       <CartBar 

@@ -52,9 +52,6 @@ function Checkout({ handleCheckout }) {
                     image: item.image
                   }}
                   quantity={item.quantity}
-                  addToCart={addToCart}
-                  decreaseQuantity={decreaseQuantity}
-                  cartLoading={cartLoading}
                 />
               </div>
             </div>
