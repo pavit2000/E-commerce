@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS/Auth.css"; 
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useRedirectIfLoggedIn } from "../hooks/useRedirectIfLoggedIn";
 const BASE_URL = "http://localhost:5001";
 
 function Register() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         username: "",
         email: "",
         password: "",
         isAdmin: false,
     });
+
+    useRedirectIfLoggedIn(user);
     
     const[message, setMessage] = useState("null");
     const handleChange = (e) => {

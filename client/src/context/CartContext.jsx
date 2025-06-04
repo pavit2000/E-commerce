@@ -131,7 +131,6 @@ export const CartProvider = ({ children }) => {
       const result = await response.json();
       if (!response.ok) {
         const message = typeof result === 'string' ? result : `${response.status} ${response.statusText}`;
-        setNotification({ type: "error", message });
         throw new Error(message);
       }
       setCartItems(result.products || []);
