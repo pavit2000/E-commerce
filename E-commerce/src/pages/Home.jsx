@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { filterProducts } from "../utils/filterProducts";
 import { CartProvider, useCart } from "../context/CartContext";
-import "../CSS/home.css"; 
+import "../CSS/Home.css";
 import FilterControls from "../components/FilterControls";
 import Modal from "../components/Modal";
 
