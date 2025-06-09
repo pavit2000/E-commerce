@@ -12,3 +12,15 @@
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.color-options {
+  margin-top: 1rem;
+}
+
+.color-option {
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}

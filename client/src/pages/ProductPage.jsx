@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 import "../CSS/ProductPage.css"; // Import your CSS file
 import { useAuth } from "../context/AuthContext";
@@ -15,10 +15,11 @@ function ProductPage() {
       `Bearer ${user?.accessToken}`
   };  
   const { id } = useParams();
-  //const { cartItems, addToCart, removeFromCart } = useCart();
   const { cartItems, cartLoading, addToCart, decreaseQuantity } = useCart();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
+  const [variants, setVariants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +41,21 @@ function ProductPage() {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    if (!product) return;
+    const parent = product.parentProduct || product._id;
+    const fetchVariants = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/products?parent=${parent}`);
+        const data = await res.json();
+        setVariants(data);
+      } catch (err) {
+        console.error("Error fetching variants:", err);
+      }
+    };
+    fetchVariants();
+  }, [product]);
+
   const cartItem = cartItems.find((item) => item.productId === id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
@@ -60,6 +76,20 @@ function ProductPage() {
         <div className="product-info">
           <p className="product-price">${product.price.toFixed(2)}</p>
           <p className="product-description">{product.desc}</p>
+
+          {variants.length > 0 && (
+            <div className="color-options">
+              {variants.map((v) => (
+                <button
+                  key={v._id}
+                  className="color-option"
+                  onClick={() => navigate(`/product/${v._id}`)}
+                >
+                  {v.color}
+                </button>
+              ))}
+            </div>
+          )}
 
           <QuantityControls
             product={product}
