@@ -1,7 +1,7 @@
 const { isValidObjectId } = require("mongoose");
 const { Cart } = require("../models/cartModel");
-const { Users } = require("../models/userModel");
-const { Products } = require("../models/productModel");
+const Users = require("../models/userModel");
+const Products = require("../models/productModel");
 
 exports.addItemToCart = async (req, res) => {
     const userId = req.user._id
@@ -138,5 +138,4 @@ exports.deleteCart =  async(req, res) => {
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' })
     }
-
 }

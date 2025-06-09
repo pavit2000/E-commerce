@@ -62,6 +62,11 @@ const productSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users",
     },   
+    parentProduct: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products",
+        default: null
+    }
 },
 {
     timestamps: true

@@ -1,4 +1,13 @@
-const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, addToWishlist, rating } = require('../controllers/productController')
+const {
+    getProducts,
+    getProduct,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    addToWishlist,
+    rating,
+    getSellerProducts
+  } = require('../controllers/productController')
 const { validateToken, validateTokenAndAuth, AdminAuth } = require('../middlewares/validateTokenHandler')
 const router = require('express').Router()
 

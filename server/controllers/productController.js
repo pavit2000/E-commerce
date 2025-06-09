@@ -11,6 +11,7 @@ getProducts = asyncHandler(async(req,res)=>{
     // res.status(200).json(products)
     const qNew = req.query.new
     const qCategory = req.query.category 
+    const qParent = req.query.parent
     let products
     if(qNew){
         products = await Products.find().sort({createdAt:-1}).limit(2)
@@ -21,6 +22,9 @@ getProducts = asyncHandler(async(req,res)=>{
             }
             })
         }
+    else if(qParent){
+        products = await Products.find({ parentProduct: qParent })
+    }
     else{
         products = await Products.find()
     }
@@ -152,4 +156,13 @@ rating = asyncHandler(async(req,res)=>{
         console.log(productRating)
 })
 
-module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct, addToWishlist, rating }
+module.exports = {
+    getProducts,
+    getProduct,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    addToWishlist,
+    rating,
+    getSellerProducts
+}

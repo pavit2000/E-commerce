@@ -30,7 +30,10 @@ export const CartProvider = ({ children }) => {
   const cartId = 1;
 
   useEffect(() => {
-    if (!user?.accessToken) return;
+    if (!user?.accessToken) {
+      setCartItems([]);
+      return;
+    }
     const fetchCart = async () => {
       try {
         const res = await fetch(`${BASE_URL}/carts/get-cart`, {
@@ -51,7 +54,7 @@ export const CartProvider = ({ children }) => {
     };
 
     fetchCart();
-  }, []);
+  }, [user]);
 
   const addToCart = async (product) => {
     try {
