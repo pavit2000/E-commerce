@@ -21,6 +21,7 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [variants, setVariants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sizeMap, setSizeMap] = useState({});
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,6 +50,13 @@ function ProductPage() {
         const res = await fetch(`${BASE_URL}/products?parent=${parent}`);
         const data = await res.json();
         setVariants(data);
+        const map = {};
+        data.forEach((v) => {
+          if (v.size && !map[v.size]) {
+            map[v.size] = v._id;
+          }
+        });
+        setSizeMap(map);
       } catch (err) {
         console.error("Error fetching variants:", err);
       }
@@ -86,6 +94,20 @@ function ProductPage() {
                   onClick={() => navigate(`/product/${v._id}`)}
                 >
                   {v.color}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {Object.keys(sizeMap).length > 0 && (
+            <div className="size-options">
+              {Object.entries(sizeMap).map(([size, id]) => (
+                <button
+                  key={id}
+                  className="size-option"
+                  onClick={() => navigate(`/product/${id}`)}
+                >
+                  {size}
                 </button>
               ))}
             </div>
