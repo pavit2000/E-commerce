@@ -5,6 +5,7 @@ import "../CSS/checkout.css";
 import CartBar from "../components/CartBar";
 import QuantityControls from "../components/QuantityControls";
 import { useAuth } from "../context/AuthContext";
+import LogoutButton from "../components/LogoutButton";
 
 const BASE_URL = "http://localhost:5001";
 
@@ -44,6 +45,14 @@ function Checkout() {
 
   return (
     <div className="container">
+      {user && (
+        <>
+          <LogoutButton />
+          <div className="user-display">
+            Welcome, <strong>{user.username}</strong>
+          </div>
+        </>
+      )}
       <h1 className="heading">Checkout</h1>
 
       <CartBar 
