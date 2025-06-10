@@ -62,10 +62,11 @@ getUserOrders = asyncHandler(async (req, res) => {
     // console.log(userId)
     const userOrders = await Orders.find({ orderby: userId })
         .populate("products.productId")
-        .populate("orderby")
+        // .populate("orderby")
         .exec()
-    if(userOrders.length) res.json([userOrders])
-    else res.json({msg: 'No Orders Found'})
+    // if(userOrders.length) res.json([userOrders])
+    // else res.json({msg: 'No Orders Found'})
+    res.json(userOrders)
 })
 
 deleteOrder = asyncHandler(async(req,res)=>{

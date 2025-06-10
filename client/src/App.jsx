@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Checkout from "./pages/Checkout";
 import ProductPage from "./pages/ProductPage";
+import Orders from "./pages/Orders";
 import { CartProvider } from "./context/CartContext";
 import Snackbar from "./components/Snackbar";
 import Register from "./Auth/Register";
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
