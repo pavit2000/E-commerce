@@ -6,7 +6,9 @@ import CartBar from "../components/CartBar";
 import QuantityControls from "../components/QuantityControls";
 import { useAuth } from "../context/AuthContext";
 
-function Checkout({ handleCheckout }) {
+const BASE_URL = "http://localhost:5001";
+
+function Checkout() {
   const { user } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -15,6 +17,30 @@ function Checkout({ handleCheckout }) {
     }
   }, [user, navigate]);
   const { cartItems, addToCart, decreaseQuantity, totalQuantity, cartLoading, totalPrice, deleteCart } = useCart();
+
+  const handleCheckout = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify({
+          email: user.email,
+          address: "N/A",
+          contact: user.username,
+          cartTotal: totalPrice,
+        }),
+      });
+      if (res.ok) {
+        await deleteCart();
+        navigate("/orders");
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err);
+    }
+  };
 
   return (
     <div className="container">
