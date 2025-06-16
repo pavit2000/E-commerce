@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema(
         },
         quantity: Number,
         title: String,
+        price: Number,
           count: {
             type: Number
         },
@@ -17,6 +18,10 @@ const orderSchema = new mongoose.Schema(
             type: String,
         },
     }],
+      totalPrice: {
+        type: Number,
+        default: 0,
+      },
       paymentIntent: {},
       orderStatus: {
         type: String,
