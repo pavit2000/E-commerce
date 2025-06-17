@@ -89,7 +89,7 @@ deleteOrder = asyncHandler(async(req,res)=>{
     res.json({msg: 'successfully deleted', userOrderAvailable})
 })
 
-payOrder = asyncHandler(async(req,res)=>{
+createPaymentIntent = asyncHandler(async(req,res)=>{
     const order = await Orders.findById(req.params.id)
     if(!order){
         res.status(404)
@@ -97,14 +97,15 @@ payOrder = asyncHandler(async(req,res)=>{
     }
 
     if(!stripe){
-        order.paymentIntent = {
-            id: uniqid(),
-            method: 'Simulated',
-            amount: order.totalPrice,
-            status: 'Paid',
-            created: Date.now(),
-            currency: 'USD'
-        }
+        res.status(500)
+        throw new Error('Stripe not configured')
+        // order.paymentIntent = {
+        //     id: uniqid(),
+        //     method: 'Simulated',
+        //     amount: order.totalPrice,
+        //     status: 'Paid',
+        //     created: Date.now(),
+        //     currency: 'USD'
     } else {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(order.totalPrice * 100),
@@ -122,9 +123,37 @@ payOrder = asyncHandler(async(req,res)=>{
         }
     }
 
-    order.orderStatus = 'Processing'
+    //order.orderStatus = 'Processing'
     await order.save()
-    res.json(order)
+    res.json({clientSecret: paymentIntent.client_secret})
+    //res.json(order)
+})
+
+confirmPayment = asyncHandler(async(req,res)=>{
+    const order = await Orders.findById(req.params.id)
+    if(!order){
+        res.status(404)
+        throw new Error('Order not found')
+    }
+
+    if(!stripe){
+        res.status(500)
+        throw new Error('Stripe not configured')
+    }
+
+    const { paymentIntentId } = req.body
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+
+    if(paymentIntent.status === 'succeeded'){
+        order.paymentIntent.status = 'Paid'
+        order.paymentIntent.id = paymentIntent.id
+        order.orderStatus = 'Processing'
+        await order.save()
+        res.json(order)
+    }else{
+        res.status(400)
+        throw new Error('Payment not completed')
+    }
 })
 
 
@@ -141,4 +170,4 @@ updateOrderStatus = asyncHandler(async (req, res) => {
       res.json(updateOrderStatus);
     
 })
-module.exports = { createOrder, getOrders, getOrder, getUserOrders, deleteOrder, updateOrderStatus, payOrder }
+module.exports = { createOrder, getOrders, getOrder, getUserOrders, deleteOrder, updateOrderStatus, createPaymentIntent, confirmPayment }

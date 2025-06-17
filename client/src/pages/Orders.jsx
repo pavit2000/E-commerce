@@ -39,65 +39,9 @@ function Orders() {
     fetchOrders();
   }, [user, navigate]);
 
-  const handlePay = async (orderId) => {
-    try {
-      const res = await fetch(`${BASE_URL}/orders/${orderId}/pay`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      if (res.ok) {
-        await fetchOrders();
-      }
-    } catch (err) {
-      console.error('Payment failed:', err);
-    }
+  const handlePay = (orderId) => {
+    navigate(`/pay/${orderId}`);
   };
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/login");
-  //     return;
-  //   }
-  //   const fetchOrders = async () => {
-  //     try {
-  //       const res = await fetch(`${BASE_URL}/orders/user-orders`, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${user.accessToken}`,
-  //         },
-  //       });
-  //       const data = await res.json();
-  //       if (res.ok) {
-  //         setOrders(data);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error loading orders:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchOrders();
-  // }, [user, navigate]);
-
-  // const handlePay = async (orderId) => {
-  //   try {
-  //     const res = await fetch(`${BASE_URL}/orders/${orderId}/pay`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${user.accessToken}`,
-  //       },
-  //     });
-  //     if (res.ok) {
-  //       await fetchOrders();
-  //     }
-  //   } catch (err) {
-  //     console.error('Payment failed:', err);
-  //   }
-  // };
 
   if (loading) return <p className="loading">Loading orders...</p>;
 
@@ -119,7 +63,6 @@ function Orders() {
           <div key={order._id} className="order-card">
             <p>Order ID: {order.paymentIntent.id}</p>
             <p>Status: {order.paymentIntent.status}</p>
-            {/* <p>Status: {order.orderStatus}</p> */}
             <ul>
               {order.products.map((item) => (
                 <li key={item._id || item.productId?._id || item.productId}>
