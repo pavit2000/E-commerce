@@ -96,9 +96,10 @@ createPaymentIntent = asyncHandler(async(req,res)=>{
         throw new Error('Order not found')
     }
 
+    let paymentIntent
     if(!stripe){
         res.status(500)
-        throw new Error('Stripe not configured')
+        throw new Error('Stripe not configured Set STRIPE_SECRET_KEY in server/.env')
         // order.paymentIntent = {
         //     id: uniqid(),
         //     method: 'Simulated',
@@ -107,11 +108,17 @@ createPaymentIntent = asyncHandler(async(req,res)=>{
         //     created: Date.now(),
         //     currency: 'USD'
     } else {
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(order.totalPrice * 100),
-            currency: 'usd',
-            metadata: {orderId: order._id.toString()}
-        })
+        try {
+            paymentIntent = await stripe.paymentIntents.create({
+                amount: Math.round(order.totalPrice * 100),
+                currency: 'usd',
+                metadata: {orderId: order._id.toString()}
+            })
+        } catch (err) {
+            console.error('Stripe error:', err)
+            res.status(500)
+            throw new Error(err.message)
+        }
 
         order.paymentIntent = {
             id: paymentIntent.id,
@@ -125,7 +132,10 @@ createPaymentIntent = asyncHandler(async(req,res)=>{
 
     //order.orderStatus = 'Processing'
     await order.save()
-    res.json({clientSecret: paymentIntent.client_secret})
+    if (paymentIntent) {
+        res.json({clientSecret: paymentIntent.client_secret})
+    }
+    //res.json({clientSecret: paymentIntent.client_secret})
     //res.json(order)
 })
 
@@ -142,7 +152,15 @@ confirmPayment = asyncHandler(async(req,res)=>{
     }
 
     const { paymentIntentId } = req.body
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+    //const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+    let paymentIntent
+    try {
+        paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+    } catch (err) {
+        console.error('Stripe error:', err)
+        res.status(500)
+        throw new Error(err.message)
+    }
 
     if(paymentIntent.status === 'succeeded'){
         order.paymentIntent.status = 'Paid'
