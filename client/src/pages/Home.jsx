@@ -8,9 +8,7 @@ import "../CSS/home.css";
 import FilterControls from "../components/FilterControls";
 import Modal from "../components/Modal";
 import { useAuth } from "../context/AuthContext";
-import LogoutButton from "../components/LogoutButton";
-import LoginButton from "../components/LoginButton";
-import RegisterButton from "../components/RegisterButton";
+import Header from "../components/Header";
 import CartBar from "../components/CartBar";
 
 
@@ -80,16 +78,7 @@ function Home() {
 
   return (
     <div className="container">
-      <LoginButton />
-      {user && <LogoutButton />}
-      <RegisterButton />
-
-      {user && (
-        <div className="user-display">
-          Welcome, <strong>{user.username}</strong>
-        </div>
-      )}
-      <h1 className="heading">Holiday Specials</h1>
+      <Header title="Holiday Specials" />
 
       <CartBar 
         onCheckout={triggerCheckout} 

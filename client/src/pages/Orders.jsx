@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../CSS/Orders.css";
 import LogoutButton from "../components/LogoutButton";
 
@@ -70,13 +70,19 @@ function Orders() {
                 </li>
               ))}
             </ul>
-            <p className="order-total">Total: ${order.totalPrice?.toFixed(2) || order.paymentIntent.amount}</p>
-            {order.paymentIntent.status !== 'Paid' && (
+            <p className="order-total">
+              Total: $
+              {order.totalPrice?.toFixed(2) || order.paymentIntent.amount}
+            </p>
+            {order.paymentIntent.status !== "Paid" && (
               <button onClick={() => handlePay(order._id)}>Pay Now</button>
             )}
           </div>
         ))
       )}
+      <Link to="/" className="back-link">
+        Back to Home
+      </Link>
     </div>
   );
 }
