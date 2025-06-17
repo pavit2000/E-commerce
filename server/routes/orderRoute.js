@@ -1,4 +1,4 @@
-const { createOrder, getOrders, getOrder, getUserOrders, deleteOrder, updateOrderStatus } = require('../controllers/orderController')
+const { createOrder, getOrders, getOrder, getUserOrders, deleteOrder, updateOrderStatus, createPaymentIntent, confirmPayment } = require('../controllers/orderController')
 const { validateTokenAndAuth, AdminAuth, validateToken } = require('../middlewares/validateTokenHandler')
 const router = require('express').Router()
 
@@ -15,5 +15,9 @@ router.get('/', AdminAuth, getOrders)
 router.delete('/:id', validateToken, deleteOrder)
 
 router.put('/:id', AdminAuth, updateOrderStatus)
+
+// router.post('/:id/pay', validateToken, payOrder)
+router.post('/:id/pay', validateToken, createPaymentIntent)
+router.post('/:id/confirm', validateToken, confirmPayment)
 
 module.exports = router

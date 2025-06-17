@@ -30,14 +30,16 @@ exports.addItemToCart = async (req, res) => {
       productItem.quantity += quantity;
       cart.products[itemIndex] = productItem;
     } else {
-      await cart.products.push({ productId: productId, quantity: quantity, title: title, image: image, price: price });
+      // await cart.products.push({ productId: productId, quantity: quantity, title: title, image: image, price: price });
+      await cart.products.push({ productId: productId, quantity: quantity, title, image, price });
     }
     cart = await cart.save();
     return res.status(200).send({ status: true, updatedCart: cart });
   } else {
     const newCart = await Cart.create({
       userId,
-      products: [{ productId: productId, quantity: quantity, title: title, image: image, price: price }],
+      // products: [{ productId: productId, quantity: quantity, title: title, image: image, price: price }],
+      products: [{ productId: productId, quantity: quantity, title, image, price }],
     });
 
     return res.status(201).send({ status: true, newCart: newCart });

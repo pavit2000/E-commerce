@@ -6,6 +6,7 @@ import ProductPage from "./pages/ProductPage";
 import Orders from "./pages/Orders";
 import { CartProvider } from "./context/CartContext";
 import Snackbar from "./components/Snackbar";
+import Payment from "./pages/Payment";
 import Register from "./Auth/Register";
 import Login from "./Auth/Login";
 import { AuthProvider } from "./context/AuthContext";
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/pay/:id" element={<Payment />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
