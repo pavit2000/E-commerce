@@ -1,5 +1,5 @@
 import React from "react";
-import "../CSS/quantityControls.css"; // Optional for scoped styles
+import "../CSS/QuantityControls.css"; // Optional for scoped styles
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
