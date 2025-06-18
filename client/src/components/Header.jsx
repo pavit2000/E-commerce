@@ -28,24 +28,7 @@ function Header({ title }) {
         </div>
       )}
     </header>
-    // <header className="header">
-    //   <div className="auth-controls">
-    //     {user ? (
-    //       <>
-    //         <LogoutButton />
-    //         <div className="user-display">
-    //           Welcome, <strong>{user.username}</strong>
-    //         </div>
-    //       </>
-    //     ) : (
-    //       <>
-    //         <LoginButton />
-    //         <RegisterButton />
-    //       </>
-    //     )}
-    //     <h1 className="heading">{title}</h1>
-    //   </div>
-    // </header>
+
   );
 }
 

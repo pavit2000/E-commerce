@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
-import "../CSS/snackbar.css"; // Add your styles here
+import "../CSS/Snackbar.css"; // Add your styles here
 
 const Snackbar = () => {
   const { notification, setNotification } = useCart();
